@@ -34,12 +34,11 @@ namespace OsuCalculator.Console
             {
                 command.Description = "Get beatmap from osu API";
                 command.HelpOption();
-                
+
                 var argId = command.Argument<int>("id", "Beatmap id").IsRequired();
                 
                 command.OnExecute(() =>
                 {
-                    
                     var id =  Int32.Parse(argId.Value);
                     
                     //options values

@@ -1,4 +1,5 @@
-﻿/.idea
+﻿/build
+/.idea
 /OsuCalculator/bin
 /OsuCalculator/obj
 

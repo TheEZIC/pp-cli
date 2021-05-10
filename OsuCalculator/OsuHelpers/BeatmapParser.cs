@@ -12,16 +12,14 @@ namespace OsuCalculator.OsuHelpers
 {
     public class BeatmapParser
     {
-        public BeatmapParserResult ParseId(int id, int modeNumber = 0)
+        public BeatmapParserResult ParseId(int id, int mode = 0)
         {
             try
             {
-                var modes = new string[] { "osu", "taiko", "fruits", "mania"};
-                var mode = modes[modeNumber];
-                var stream = new WebClient().OpenRead(@$"https://osu.ppy.sh/{mode}/{id}");
+                var stream = new WebClient().OpenRead(@$"https://osu.ppy.sh/osu/{id}");
                 var reader = new LineBufferedReader(stream);
                 
-                return CreateResult(reader);
+                return CreateResult(reader, mode);
             }
             catch (Exception e)
             {
@@ -30,14 +28,14 @@ namespace OsuCalculator.OsuHelpers
             }
         }
 
-        public BeatmapParserResult ParseFile(string path, int modeNumber = 0)
+        public BeatmapParserResult ParseFile(string path, int mode = 0)
         {
             try
             {
                 var stream = File.OpenRead(path);
                 var reader = new LineBufferedReader(stream);
 
-                return CreateResult(reader);
+                return CreateResult(reader, mode);
             }
             catch (Exception e)
             {
@@ -46,11 +44,11 @@ namespace OsuCalculator.OsuHelpers
             }
         }
 
-        private BeatmapParserResult CreateResult(LineBufferedReader reader)
+        private BeatmapParserResult CreateResult(LineBufferedReader reader, int mode = 0)
         {
             var beatmap = Decoder.GetDecoder<Beatmap>(reader).Decode(reader);
             var workingBeatmap = new TestWorkingBeatmap(beatmap) as WorkingBeatmap;
-            var rulesetFactory = new RulesetFactory(workingBeatmap);
+            var rulesetFactory = new RulesetFactory(workingBeatmap, mode);
             var calculator = new Calculator(rulesetFactory);
             var scoreBuilder = new ScoreBuilderFactory().GetScoreBuilder(calculator);
             
