@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using osu.Game.Rulesets.Scoring;
+using osu.Game.Rulesets.Taiko.Objects;
 
 namespace OsuCalculator.OsuHelpers.ScoreBuilders
 {
@@ -14,7 +16,7 @@ namespace OsuCalculator.OsuHelpers.ScoreBuilders
         protected override int GetMaxCombo()
         {
             var hitObjects = Beatmap.HitObjects;
-            return hitObjects.Count;
+            return hitObjects.OfType<Hit>().Count();
         }
 
         protected override Dictionary<HitResult, int> GenerateHitResult(double accuracy, int countMiss)

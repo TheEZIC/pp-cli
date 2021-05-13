@@ -1,10 +1,14 @@
 ﻿using System;
 using System.IO;
 using System.Net;
+using osu.Framework.Audio;
+using osu.Framework.Audio.Track;
+using osu.Framework.Graphics.Textures;
 using osu.Game.Beatmaps;
 using osu.Game.Beatmaps.Formats;
 using osu.Game.IO;
 using osu.Game.Rulesets;
+using osu.Game.Rulesets.Osu.Beatmaps;
 using osu.Game.Tests.Beatmaps;
 using OsuCalculator.OsuHelpers.ScoreBuilders;
 
@@ -47,8 +51,7 @@ namespace OsuCalculator.OsuHelpers
         private BeatmapParserResult CreateResult(LineBufferedReader reader, int mode = 0)
         {
             var beatmap = Decoder.GetDecoder<Beatmap>(reader).Decode(reader);
-            var workingBeatmap = new TestWorkingBeatmap(beatmap) as WorkingBeatmap;
-            var rulesetFactory = new RulesetFactory(workingBeatmap, mode);
+            var rulesetFactory = new RulesetFactory(beatmap, mode);
             var calculator = new Calculator(rulesetFactory);
             var scoreBuilder = new ScoreBuilderFactory().GetScoreBuilder(calculator);
             
@@ -60,7 +63,7 @@ namespace OsuCalculator.OsuHelpers
                 ScoreBuilder = scoreBuilder,
             };
         }
-        
+
         public class BeatmapParserResult
         {
             public Ruleset Ruleset { get; set; }

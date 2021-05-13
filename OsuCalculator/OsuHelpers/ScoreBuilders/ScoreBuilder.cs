@@ -18,13 +18,10 @@ namespace OsuCalculator.OsuHelpers.ScoreBuilders
             Beatmap = calculator.GetBeatmap();
         }
 
-        public ScoreBuilder AddCombo(int combo = -1)
+        public ScoreBuilder AddCombo(int? combo = null)
         {
-            if (combo == -1)
-                combo = GetMaxCombo();
-            
-            ScoreInfo.MaxCombo = Math.Min(combo, GetMaxCombo());;
-
+            combo ??= GetMaxCombo();
+            ScoreInfo.MaxCombo = Math.Min(combo.GetValueOrDefault(), GetMaxCombo());
             return this;
         }
 

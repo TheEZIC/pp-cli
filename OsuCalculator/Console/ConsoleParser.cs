@@ -25,7 +25,6 @@ namespace OsuCalculator.Console
             optMode.DefaultValue = 0;
             optScore.DefaultValue = 1000000;
             optAccuracy.DefaultValue = 1;
-            optCombo.DefaultValue = -1;
             optCountMiss.DefaultValue = 0;
             optMods.DefaultValue = "";
 
@@ -45,7 +44,7 @@ namespace OsuCalculator.Console
                     var mode = Int32.Parse(optMode.Value());
                     var score = Int32.Parse(optScore.Value());
                     var accuracy = float.Parse(optAccuracy.Value());
-                    var combo = Int32.Parse(optCombo.Value());
+                    var combo = optCombo.HasValue() ? Int32.Parse(optCombo.Value()) : (int?) null;
                     var countMiss = Int32.Parse(optCountMiss.Value());
                     var mods = optMods.Value();
 
@@ -83,7 +82,7 @@ namespace OsuCalculator.Console
                     var mode = Int32.Parse(optMode.Value());
                     var score = Int32.Parse(optScore.Value());
                     var accuracy = float.Parse(optAccuracy.Value());
-                    var combo = Int32.Parse(optCombo.Value());
+                    var combo = optCombo.HasValue() ? Int32.Parse(optCombo.Value()) : (int?) null;
                     var countMiss = Int32.Parse(optCountMiss.Value());
                     var mods = optMods.Value();
 

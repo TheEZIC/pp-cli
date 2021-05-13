@@ -1,4 +1,7 @@
 ﻿using System;
+using System.IO;
+using osu.Framework.Audio.Track;
+using osu.Framework.Graphics.Textures;
 using osu.Game.Beatmaps;
 using osu.Game.Rulesets;
 using osu.Game.Rulesets.Catch;
@@ -13,23 +16,26 @@ namespace OsuCalculator.OsuHelpers
     {
         public Ruleset Ruleset { get; }
         public WorkingBeatmap WorkingBeatmap { get; }
-        public RulesetFactory(WorkingBeatmap workingBeatmap, int modeNumber = 0)
+        public RulesetFactory(Beatmap beatmap, int modeNumber = 0)
         {
+            var workingBeatmap = new TestWorkingBeatmap(beatmap);
             var rulesetId = workingBeatmap.BeatmapInfo.RulesetID;
-            Ruleset = GetRuleset(rulesetId);
+            
+            Ruleset = GetRuleset(workingBeatmap.BeatmapInfo.RulesetID);
             workingBeatmap.BeatmapInfo.Ruleset = Ruleset.RulesetInfo;
+            
             var playableBeatmap = workingBeatmap.GetPlayableBeatmap(Ruleset.RulesetInfo);
 
-            //Convert beatmmaps
+            //Convert beatmaps
             if (rulesetId == 0 && modeNumber != rulesetId)
             {
                 Ruleset = GetRuleset(modeNumber);
-                rulesetId = modeNumber;
                 playableBeatmap = Ruleset.CreateBeatmapConverter(playableBeatmap).Convert();
-                workingBeatmap = new TestWorkingBeatmap(playableBeatmap);
-                workingBeatmap.BeatmapInfo.Ruleset = Ruleset.RulesetInfo;
             }
-
+            
+            workingBeatmap = new TestWorkingBeatmap(playableBeatmap);
+            workingBeatmap.BeatmapInfo.Ruleset = Ruleset.RulesetInfo;
+            
             WorkingBeatmap = workingBeatmap;
         }
 
