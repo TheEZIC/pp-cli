@@ -10,7 +10,7 @@ namespace OsuCalculator.OsuHelpers.ScoreBuilders
         {
         }
         protected override int GetMaxCombo() => 0;
-        protected override Dictionary<HitResult, int> GenerateHitResult(double accuracy, int countMiss)
+        protected override Dictionary<HitResult, int> GenerateHitResult(double accuracy, int countMiss, int countMeh = 0)
         {
             var totalHits = Beatmap.HitObjects.Count;
 

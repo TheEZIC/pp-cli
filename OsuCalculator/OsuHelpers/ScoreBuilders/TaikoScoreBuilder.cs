@@ -19,7 +19,7 @@ namespace OsuCalculator.OsuHelpers.ScoreBuilders
             return hitObjects.OfType<Hit>().Count();
         }
 
-        protected override Dictionary<HitResult, int> GenerateHitResult(double accuracy, int countMiss)
+        protected override Dictionary<HitResult, int> GenerateHitResult(double accuracy, int countMiss, int countMeh = 0)
         {
             var totalResultCount = GetMaxCombo();
             var targetTotal = (int)Math.Round(accuracy * totalResultCount * 2);

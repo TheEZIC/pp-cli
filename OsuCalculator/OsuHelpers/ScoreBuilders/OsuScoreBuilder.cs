@@ -18,29 +18,26 @@ namespace OsuCalculator.OsuHelpers.ScoreBuilders
             var hitObjects = Beatmap.HitObjects;
             return hitObjects.Count + hitObjects.OfType<Slider>().Sum(s => s.NestedHitObjects.Count - 1);
         }
-        protected override Dictionary<HitResult, int> GenerateHitResult(double accuracy, int countMiss)
+        protected override Dictionary<HitResult, int> GenerateHitResult(double accuracy, int countMiss, int countMeh = 0)
         {
-            var hitObjects = Beatmap.HitObjects;
-            var totalResultCount = hitObjects.Count;
-            var targetTotal = (int)Math.Round(accuracy * totalResultCount * 6);
-            var delta = targetTotal - (totalResultCount - countMiss);
-            
-            var great = delta / 5;
-            var good = delta % 5;
-            var meh = totalResultCount - great - good - countMiss;
-            
+            var nObjects = Beatmap.HitObjects.Count;
+
+            var s = nObjects - countMiss - countMeh;
+            var countGood = (int)Math.Round(-((accuracy * 6 * nObjects - 6 * s - countMeh) / 4));
+            var countGreat = nObjects - countGood - countMeh - countMiss;
+
             return new Dictionary<HitResult, int>
             {
-                { HitResult.Great, great },
-                { HitResult.Good, good },
-                { HitResult.Meh, meh },
-                { HitResult.Miss, countMiss },
+                { HitResult.Great, countGreat },
+                { HitResult.Ok, countGood },
+                { HitResult.Meh, countMeh },
+                { HitResult.Miss, countMiss }
             };
         }
         protected override double GetAccuracy(Dictionary<HitResult, int> hits)
         {
             var countGreat = hits[HitResult.Great];
-            var countGood = hits[HitResult.Good];
+            var countGood = hits[HitResult.Ok];
             var countMeh = hits[HitResult.Meh];
             var countMiss = hits[HitResult.Miss];
             var total = countGreat + countGood + countMeh + countMiss;

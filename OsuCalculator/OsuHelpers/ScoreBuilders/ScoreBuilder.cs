@@ -16,6 +16,7 @@ namespace OsuCalculator.OsuHelpers.ScoreBuilders
         {
             Calculator = calculator;
             Beatmap = calculator.GetBeatmap();
+            ScoreInfo.Ruleset = calculator.GetBeatmap().BeatmapInfo.Ruleset;
         }
 
         public ScoreBuilder AddCombo(int? combo = null)
@@ -37,16 +38,16 @@ namespace OsuCalculator.OsuHelpers.ScoreBuilders
             return this;
         }
 
-        public ScoreBuilder AddAccuracyAndHits(double accuracy, int countMiss = 0)
+        public ScoreBuilder AddAccuracyAndHits(double accuracy, int countMiss = 0, int countMeh = 0)
         {
-            var hits = GenerateHitResult(accuracy, countMiss);
+            var hits = GenerateHitResult(accuracy, countMiss, countMeh);
             ScoreInfo.Accuracy = GetAccuracy(hits);
             ScoreInfo.Statistics = hits;
             return this;
         }
 
         protected abstract int GetMaxCombo();
-        protected abstract Dictionary<HitResult, int> GenerateHitResult(double accuracy, int countMiss);
+        protected abstract Dictionary<HitResult, int> GenerateHitResult(double accuracy, int countMiss, int countMeh = 0);
         protected abstract double GetAccuracy(Dictionary<HitResult, int> hits);
     }
 }

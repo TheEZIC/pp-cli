@@ -20,12 +20,14 @@ namespace OsuCalculator.Console
             var optAccuracy = _app.Option<float>("-a|--accuracy <ACCURACY>", "Set accuracy", CommandOptionType.SingleValue);
             var optCombo = _app.Option<int>("-c|--combo <COMBO>", "Set combo", CommandOptionType.SingleValue);
             var optCountMiss = _app.Option<int>("-miss|--miss <MISS>", "Set count of misses", CommandOptionType.SingleValue);
+            var optCountMeh = _app.Option<int>("-50|--50 <50>", "Set count of 50", CommandOptionType.SingleValue);
             var optMods = _app.Option<string>("-mods|--mods <MODS>", "Set comma divided mods acronyms", CommandOptionType.SingleValue);
             
             optMode.DefaultValue = 0;
             optScore.DefaultValue = 1000000;
             optAccuracy.DefaultValue = 1;
             optCountMiss.DefaultValue = 0;
+            optCountMeh.DefaultValue = 0;
             optMods.DefaultValue = "";
 
             //id command
@@ -45,6 +47,7 @@ namespace OsuCalculator.Console
                     var score = Int32.Parse(optScore.Value());
                     var accuracy = float.Parse(optAccuracy.Value());
                     var combo = optCombo.HasValue() ? Int32.Parse(optCombo.Value()) : (int?) null;
+                    var countMeh = Int32.Parse(optCountMeh.Value());
                     var countMiss = Int32.Parse(optCountMiss.Value());
                     var mods = optMods.Value();
 
@@ -55,10 +58,10 @@ namespace OsuCalculator.Console
                     var scoreInfo = scoreBuilder
                         .AddCombo(combo)
                         .AddScore(score)
-                        .AddAccuracyAndHits(accuracy, countMiss)
+                        .AddAccuracyAndHits(accuracy, countMiss, countMeh)
                         .AddMods(mods)
                         .ScoreInfo;
-                        
+
                     var pp = beatmap.Calculator.CalculatePP(difficultyAttributes, scoreInfo);
                     
                     System.Console.WriteLine(pp);
@@ -83,6 +86,7 @@ namespace OsuCalculator.Console
                     var score = Int32.Parse(optScore.Value());
                     var accuracy = float.Parse(optAccuracy.Value());
                     var combo = optCombo.HasValue() ? Int32.Parse(optCombo.Value()) : (int?) null;
+                    var countMeh = Int32.Parse(optCountMeh.Value());
                     var countMiss = Int32.Parse(optCountMiss.Value());
                     var mods = optMods.Value();
 
@@ -93,7 +97,7 @@ namespace OsuCalculator.Console
                     var scoreInfo = scoreBuilder
                         .AddCombo(combo)
                         .AddScore(score)
-                        .AddAccuracyAndHits(accuracy, countMiss)
+                        .AddAccuracyAndHits(accuracy, countMiss, countMeh)
                         .AddMods(mods)
                         .ScoreInfo;
                         

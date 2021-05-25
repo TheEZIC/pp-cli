@@ -24,7 +24,7 @@ namespace OsuCalculator.OsuHelpers.ScoreBuilders
                     .OfType<BananaShower>()
                     .Count();
         }
-        protected override Dictionary<HitResult, int> GenerateHitResult(double accuracy, int countMiss)
+        protected override Dictionary<HitResult, int> GenerateHitResult(double accuracy, int countMiss, int countMeh = 0)
         {
             var combo = GetMaxCombo();
             var fruitsHit = combo - countMiss;
@@ -32,7 +32,7 @@ namespace OsuCalculator.OsuHelpers.ScoreBuilders
 
             return new Dictionary<HitResult, int>
             {
-                { HitResult.Perfect, fruitsHit },
+                { HitResult.Great, fruitsHit },
                 { HitResult.SmallTickMiss, Convert.ToInt32(tinyTickMiss) },
                 { HitResult.Miss, countMiss }
             };
